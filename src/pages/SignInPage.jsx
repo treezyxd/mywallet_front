@@ -1,8 +1,8 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import MyWalletLogo from "../components/MyWalletLogo"
+import MyWalletLogo from "../components/MyWalletLogo.jsx"
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../contexts/AuthContext";
+import AuthContext from "../contexts/AuthContext.jsx";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { ThreeDots } from 'react-loader-spinner'

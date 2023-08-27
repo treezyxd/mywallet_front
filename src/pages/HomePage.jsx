@@ -1,9 +1,9 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
-import Transactions from "../components/Transactions"
+import Transactions from "../components/Transactions.jsx"
 import { useContext, useEffect } from "react"
-import AuthContext from "../contexts/AuthContext"
-import ButtonsAddTransaction from "../components/ButtonsAddTransaction"
+import AuthContext from "../contexts/AuthContext.jsx"
+import ButtonsAddTransaction from "../components/ButtonsAddTransaction.jsx"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 

@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import AuthContext from "../contexts/AuthContext";
+import AuthContext from "../contexts/AuthContext.jsx";
 import { ThreeDots } from 'react-loader-spinner'
 
 export default function TransactionsPage() {

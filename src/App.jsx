@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import styled from "styled-components"
-import HomePage from "./pages/HomePage"
-import SignInPage from "./pages/SignInPage"
-import SignUpPage from "./pages/SignUpPage"
-import TransactionsPage from "./pages/TransactionPage"
-import AuthContext from "./contexts/AuthContext"
+import HomePage from "./pages/HomePage.jsx"
+import SignInPage from "./pages/SignInPage.jsx"
+import SignUpPage from "./pages/SignUpPage.jsx"
+import TransactionsPage from "./pages/TransactionPage.jsx"
+import AuthContext from "./contexts/AuthContext.jsx"
 import { useState } from "react"
 
 export default function App() {

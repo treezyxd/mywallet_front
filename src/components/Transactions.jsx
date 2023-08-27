@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useEffect, useState, useContext } from "react";
-import AuthContext from "../contexts/AuthContext";
+import AuthContext from "../contexts/AuthContext.jsx";
 import axios from "axios";
-import Transaction from "./Transaction";
+import Transaction from "./Transaction.jsx";
 
 
 
