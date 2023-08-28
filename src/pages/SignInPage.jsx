@@ -1,93 +1,71 @@
 import styled from "styled-components"
-import { Link } from "react-router-dom"
-import MyWalletLogo from "../components/MyWalletLogo.jsx"
-import { useNavigate } from "react-router-dom";
-import AuthContext from "../contexts/AuthContext.jsx";
-import { useState, useContext, useEffect } from "react";
-import axios from "axios";
-import { ThreeDots } from 'react-loader-spinner'
+import { useContext, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import MyWalletLogo from "../components/MyWalletLogo"
+import APIConnectionAuth from "../services/APIConnectionAuth"
 
 export default function SignInPage() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [disabled, setDisabled] = useState(false)
-  const { setUsername, setAuthToken } = useContext(AuthContext);
+  const [form, setForm] = useState( { email: "", password: "" } )
+  const navigate = useNavigate()
 
-  useEffect(verificarSessao);
-
-  function verificarSessao() {
-    const token = localStorage.getItem("token");
-    const name = localStorage.getItem("name");
-    if (token && name) {
-      setAuthToken(token)
-      setUsername(name)
-      navigate("/home")
-    }
+  function handleForm(event) {
+    setForm( {...form, [event.target.name]: event.target.value } )
   }
 
-  function handleChange(e) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+  async function handleSignIn(event) {
+    event.preventDefault()
 
-  function handleSubmit(e) {
-    e.preventDefault()
+    APIConnectionAuth.signIn(form)
+    .then(response => {
+      console.log("then")
+      console.log(response)
 
-    const promisse = axios.post(`${process.env.REACT_APP_API_URL}/sign-in`, formData)
-    setDisabled(true)
-
-    promisse.then((res) => {
-      console.log(res)
-      setAuthToken(res.data.token)
-      setUsername(res.data.name)
+      localStorage.setItem("token", response.data)
       navigate("/home")
-      localStorage.setItem("token", `${res.data.token}`);
-      localStorage.setItem("name", `${res.data.name}`);
-      setDisabled(false)
-    })
-    promisse.catch((error) => {
-      setDisabled(false)
-      alert(error.response.data)
-    })
+  })
+  .catch(error => {
+      console.log("catch")
+      console.log(error)
+      alert(error.response.data.message)
+  })
   }
 
   return (
     <SingInContainer>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit = {handleSignIn}>
         <MyWalletLogo />
-        <input placeholder="E-mail" type="email" data-test="email" name="email" onChange={handleChange} value={formData.email} required />
-        <input placeholder="Senha" type="password" data-test="password" name="password" autocomplete="new-password" onChange={handleChange} value={formData.password} required />
-        <button type="submit" data-test="sign-in-submit" disabled={disabled} >{disabled ? <ThreeDots
-          text
-          height="30"
-          width="80"
-          radius="9"
-          color="white"
-          ariaLabel="three-dots-loading"
-          wrapperStyle={{}}
-          wrapperClassName=""
-          visible={true}
-        /> : "Entrar"}</button>
+        <input
+          name="email"
+          placeholder="E-mail"
+          type="email"
+          data-test="email"
+          required
+          value={form.email}
+          onChange={handleForm}
+        />
+        <input
+          name="password"
+          placeholder="Senha"
+          type="password"
+          data-test="password"
+          required
+          value={form.password}
+          onChange={handleForm}
+        />
+        <button type="submit" data-test="sign-in-submit">Entrar</button>
       </form>
 
-      <Link to="/cadastro">
+      <Link to = "/cadastro">
         Primeira vez? Cadastre-se!
       </Link>
-    </SingInContainer >
+    </SingInContainer>
   )
 }
 
 const SingInContainer = styled.section`
-  height: calc(100vh - 50px);
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  a{
-    margin-top: 10px;
-  }
 `

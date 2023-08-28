@@ -1,67 +1,79 @@
-import { Link } from "react-router-dom"
 import styled from "styled-components"
-import MyWalletLogo from "../components/MyWalletLogo.jsx"
 import { useState } from "react"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
-import { ThreeDots } from 'react-loader-spinner'
+import { Link, useNavigate } from "react-router-dom"
+import MyWalletLogo from "../components/MyWalletLogo"
+import APIConnectionAuth from "../services/APIConnectionAuth"
 
 export default function SignUpPage() {
-  const [confirmacaoSenha, setConfirmacaoSenha] = useState("")
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" })
-  const [disabled, setDisabled] = useState(false)
-  console.log(formData)
-
+  const [form, setForm] = useState( { name: "", email: "", password: "", confirmPassword: "" } )
   const navigate = useNavigate()
 
-  function handleChange(e) {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+  function handleForm(event) {
+    const { name, value } = event.target
+    setForm( {...form, [name]: value } )
   }
 
-  function handleSubmit(e) {
-    e.preventDefault()
+  function handleSignUp(event) {
+    event.preventDefault()
+    console.log(form)
+    if (form.password !== form.confirmPassword) return alert("As senhas devem ser iguais!")
 
-    if (formData.password !== confirmacaoSenha) {
-      alert("As senhas devem ser iguais")
-      return
-    }
-
-    const promisse = axios.post(`${process.env.REACT_APP_API_URL}/sign-up`, formData)
-    setDisabled(true)
-    promisse.then(() => {
-      navigate("/")
-      setDisabled(false)
+    APIConnectionAuth.signUp(form)
+      .then(response => {
+        console.log(response)
+        alert("Cadastro criado com sucesso!")
+        navigate("/")
     })
-    promisse.catch((error) => {
-      console.log(error)
-      setDisabled(false)
-      alert(error.response.data)
-    })
-
+    .catch(error => console.log(error.response.data.message))
   }
+
+  // validação password = confirm-password onKeyUp="check()"
+  // tirei o autocomplete dos inputs
 
   return (
     <SingUpContainer>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit = {handleSignUp}>
         <MyWalletLogo />
-        <input placeholder="Nome" type="text" data-test="name" name="name" value={formData.name} onChange={handleChange} />
-        <input placeholder="E-mail" type="email" data-test="email" name="email" value={formData.email} onChange={handleChange} />
-        <input placeholder="Senha" type="password" data-test="password" autocomplete="new-password" name="password" value={formData.password} onChange={handleChange} />
-        <input placeholder="Confirme a senha" type="password" data-test="conf-password" autocomplete="new-password" value={confirmacaoSenha} onChange={e => setConfirmacaoSenha(e.target.value)} required />
-        <button type="submit" data-test="sign-up-submit" disabled={disabled}>{disabled ? <ThreeDots
-          text
-          height="30"
-          width="80"
-          radius="9"
-          color="white"
-          ariaLabel="three-dots-loading"
-          wrapperStyle={{}}
-          wrapperClassName=""
-          visible={true}
-        /> : "Cadastrar"}</button>
+        <input
+          name="name"
+          placeholder="Nome"
+          type="text"
+          data-test="name"
+          required
+          value={form.name}
+          onChange={handleForm}
+        />
+        <input
+          name="email"
+          placeholder="E-mail"
+          type="email"
+          data-test="email"
+          required
+          value={form.email}
+          onChange={handleForm}
+        />
+        <input
+          name="password"
+          placeholder="Senha"
+          type="password"
+          data-test="password"
+          required
+          value={form.password}
+          onChange={handleForm}
+        />
+        <input
+          name="confirmPassword"
+          placeholder="Confirme a senha"
+          type="password"
+          data-test="conf-password"
+          required
+          value={form.confirmPassword}
+          onChange={handleForm}
+        />
+        <button type="submit" data-test="sign-up-submit">Cadastrar</button>
       </form>
 
-      <Link to="/">
+      <Link to = "/">
         Já tem uma conta? Entre agora!
       </Link>
     </SingUpContainer>
@@ -69,17 +81,9 @@ export default function SignUpPage() {
 }
 
 const SingUpContainer = styled.section`
-  height: calc(100vh - 50px);
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  a{
-    margin-top: 10px;
-  }
 `
