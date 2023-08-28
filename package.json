@@ -24,7 +24,7 @@
     "build": "vite build",
     "test": "vite test",
     "eject": "vite eject",
-    "serve": "vite preview"
+    "preview": "vite preview"
   },
   "eslintConfig": {
     "extends": [
