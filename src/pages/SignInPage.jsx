@@ -54,9 +54,9 @@ export default function SignInPage() {
     <SingInContainer>
       <form onSubmit={handleSubmit}>
         <MyWalletLogo />
-        <input placeholder="E-mail" type="email" name="email" onChange={handleChange} value={formData.email} required />
-        <input placeholder="Senha" type="password" name="password" autocomplete="new-password" onChange={handleChange} value={formData.password} required />
-        <button type="submit" disabled={disabled} >{disabled ? <ThreeDots
+        <input placeholder="E-mail" type="email" data-test="email" name="email" onChange={handleChange} value={formData.email} required />
+        <input placeholder="Senha" type="password" data-test="password" name="password" autocomplete="new-password" onChange={handleChange} value={formData.password} required />
+        <button type="submit" data-test="sign-in-submit" disabled={disabled} >{disabled ? <ThreeDots
           text
           height="30"
           width="80"

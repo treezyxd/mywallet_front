@@ -44,11 +44,11 @@ export default function SignUpPage() {
     <SingUpContainer>
       <form onSubmit={handleSubmit}>
         <MyWalletLogo />
-        <input placeholder="Nome" type="text" name="name" value={formData.name} onChange={handleChange} />
-        <input placeholder="E-mail" name="email" value={formData.email} onChange={handleChange} />
-        <input placeholder="Senha" type="password" autocomplete="new-password" name="password" value={formData.password} onChange={handleChange} />
-        <input placeholder="Confirme a senha" type="password" autocomplete="new-password" value={confirmacaoSenha} onChange={e => setConfirmacaoSenha(e.target.value)} required />
-        <button type="submit" disabled={disabled}>{disabled ? <ThreeDots
+        <input placeholder="Nome" type="text" data-test="name" name="name" value={formData.name} onChange={handleChange} />
+        <input placeholder="E-mail" type="email" data-test="email" name="email" value={formData.email} onChange={handleChange} />
+        <input placeholder="Senha" type="password" data-test="password" autocomplete="new-password" name="password" value={formData.password} onChange={handleChange} />
+        <input placeholder="Confirme a senha" type="password" data-test="conf-password" autocomplete="new-password" value={confirmacaoSenha} onChange={e => setConfirmacaoSenha(e.target.value)} required />
+        <button type="submit" data-test="sign-up-submit" disabled={disabled}>{disabled ? <ThreeDots
           text
           height="30"
           width="80"
